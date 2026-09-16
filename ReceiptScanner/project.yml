@@ -1,0 +1,61 @@
+name: ReceiptScanner
+options:
+  bundleIdPrefix: com.danbadea
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16.0"
+  generateSchemes: true
+
+settings:
+  SWIFT_VERSION: "5.9"
+
+targets:
+  ReceiptScanner:
+    type: application
+    platform: iOS
+    sources:
+      - Sources/ReceiptScanner
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.danbadea.ReceiptScanner
+      INFOPLIST_FILE: Sources/ReceiptScanner/Info.plist
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      TARGETED_DEVICE_FAMILY: "1"
+      CODE_SIGN_STYLE: Automatic
+    info:
+      path: Sources/ReceiptScanner/Info.plist
+      properties:
+        NSCameraUsageDescription: "ReceiptScanner needs camera access to scan your receipts."
+        NSPhotoLibraryUsageDescription: "ReceiptScanner needs photo library access to import receipt images."
+        UILaunchScreen: {}
+        UIRequiredDeviceCapabilities: [arm64]
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleDisplayName: "BonScanner"
+        LSApplicationCategoryType: "public.app-category.finance"
+
+  ReceiptScannerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Tests/ReceiptScannerTests
+    settings:
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ReceiptScanner.app/ReceiptScanner"
+      BUNDLE_LOADER: "$(TEST_HOST)"
+    dependencies:
+      - target: ReceiptScanner
+
+schemes:
+  ReceiptScanner:
+    build:
+      targets:
+        ReceiptScanner: all
+    test:
+      targets:
+        - ReceiptScannerTests
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
